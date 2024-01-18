@@ -1,0 +1,85 @@
+Casos de teste UserController
+
+[POST] /api/v1/finance/users
+    ERRO:
+        1. Token JWT válido sem prefixo "Bearer"
+        2. Token JWT inválido com prefixo "Bearer"
+        3. Token JWT expirado com prefixo "Bearer"
+        4. Token JWT válido com prefixo "Bearer"
+            4.1.  Campo "username" vazio
+            4.2.  Campo "username" nulo
+            4.3.  Campo "username" sem formato de email
+            4.4   Campo "username" preenchido com um valor já salvo no banco de dados
+            4.4.  Campo "nickname" vazio
+            4.5.  Campo "nickname" nulo
+            4.6.  Campo "nickname" com mais de 50 caracteres
+            4.7.  Campo "password" vazio
+            4.8.  Campo "password" nulo
+            4.9.  Campo "roles" nulo
+            4.10. Campo "roles" vazio
+            4.11. Campo "roles" com itens diferente de ROLE_ADMIN e ROLE_USER
+            4.12. Campo "roles" com mais de dois itens
+            4.12. Usuário que está cadastrando não possui ROLE_ADMIN
+
+    SUCESSO:
+        1. Token JWT válido com prefixo "Bearer" e usuário que está cadastrando possui ROLE_ADMIN
+            1.1. Campos preenchidos com valores válidos e roles ROLE_ADMIN, ROLE_USER
+            1.2. Campos preenchidos com valores e role ROLE_ADMIN
+            1.3. Campos preenchidos com valores e role ROLE_USER
+
+[GET] /api/v1/finance/users
+    ERRO:
+        1. Token JWT válido sem prefixo "Bearer"
+        2. Token JWT inválido com prefixo "Bearer"
+        3. Token JWT expirado com prefixo "Bearer"
+
+    SUCESSO:
+        1. Token JWT válido com prefixo "Bearer"
+
+[GET] /api/v1/finance/users/{id}
+    ERRO:
+        1. Token JWT válido sem prefixo "Bearer"
+        2. Token JWT inválido com prefixo "Bearer"
+        3. Token JWT expirado com prefixo "Bearer"
+        4. Token JWT válido com prefixo "Bearer"
+            4.1. Path variable "id" com id diferente do formato UUID
+            4.2. Path variable "id" com id em formato UUID porém sem nenhum registro equivalente cadastrado
+
+    SUCESSO:
+        1. Path variable "id" com id em formato UUID com registro equivalente cadastrado e token JWT válido com prefixo "Bearer"
+
+[PATCH] /api/v1/finance/users
+    ERRO:
+        1. Token JWT válido sem prefixo "Bearer"
+        2. Token JWT inválido com prefixo "Bearer"
+        3. Token JWT expirado com prefixo "Bearer"
+        4. Token JWT válido com prefixo "Bearer"
+            4.1. Campo "nickname" vazio
+            4.2. Campo "nickname" nulo
+            4.3. Campo "nickname" com mais de 50 caracteres
+
+    SUCESSO:
+        1. Campo preenchido com valor válido e token JWT válido com prefixo "Bearer"
+
+[PUT] /api/v1/finance/users/{id}
+    ERRO:
+        1. Token JWT válido sem prefixo "Bearer"
+        2. Token JWT inválido com prefixo "Bearer"
+        3. Token JWT expirado com prefixo "Bearer"
+        4. Token JWT válido com prefixo "Bearer"
+            4.1. Path variable "id" com id diferente do formato UUID
+            4.2. Path variable "id" com id em formato UUID porém sem nenhum registro equivalente cadastrando
+            4.3. Campo "roles" com itens diferente de ROLE_ADMIN e ROLE_USER
+            4.4. Campo "roles" com mais de dois itens
+            4.5. Usuário que está alterando não possui ROLE_ADMIN
+
+    SUCESSO:
+        1. Token JWT válido com prefixo "Bearer" e usuário que está alterando possui ROLE_ADMIN
+            1.1. Campo "disabled" = true
+            1.2. Campo "disabled" = false
+            1.3. Campo "disabled" = null (não deve alterar o valor de disabled)
+            1.4. Campo "roles" = ROLE_ADMIN
+            1.5. Campo "roles = ROLE_USER
+            1.6. Campo "roles" = ROLE_ADMIN, ROLE_USER
+            1.7. Campo "roles" = null (não deve alterar as roles)
+            1.7. Campo "roles" = vazio (não deve alterar as roles)
