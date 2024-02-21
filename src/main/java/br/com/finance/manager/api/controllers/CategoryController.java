@@ -25,11 +25,11 @@ import br.com.finance.manager.api.services.CategoryService;
 
 import jakarta.validation.Valid;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @RestController
-@RequestMapping("/api/v1/finance/categories")
+@RequestMapping("/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;

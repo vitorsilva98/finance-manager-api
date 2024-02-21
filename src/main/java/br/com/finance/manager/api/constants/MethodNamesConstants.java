@@ -18,8 +18,8 @@ public class MethodNamesConstants {
 
     /* CategoryController */
     public static final String CREATE_CATEGORY = "[POST] /categories";
-    public static final String GET_ALL_CATEGORIES = "[GET] /categories/{id}";
-    public static final String GET_CATEGORY_BY_ID = "[GET] /categories";
+    public static final String GET_CATEGORY_BY_ID = "[GET] /categories/{id}";
+    public static final String GET_ALL_CATEGORIES = "[GET] /categories";
     public static final String DELETE_CATEGORY_BY_ID = "[DELETE] /categories/{id}";
 
     /* EntryController */

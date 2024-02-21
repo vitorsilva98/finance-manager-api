@@ -34,7 +34,7 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authorizeHttpRequests -> {
                 authorizeHttpRequests.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll();
                 authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/health").permitAll();
-                authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/v1/finance/login").permitAll();
+                authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/v1/finance/auth/login").permitAll();
                 authorizeHttpRequests.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                 authorizeHttpRequests.anyRequest().authenticated();
             })

@@ -3,6 +3,7 @@ package br.com.finance.manager.api.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +17,11 @@ import br.com.finance.manager.api.payloads.responses.LoginResponse;
 
 import jakarta.validation.Valid;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @RestController
-@RequestMapping("/api/v1/finance")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -34,11 +35,11 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.LOGIN, request);
-        var authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
-        var authentication = authenticationManager.authenticate(authenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
         LoginResponse response = tokenService.generateToken(authentication);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.LOGIN, response);
+        log.info(LogMessagesConstants.OUTPUT_ENDPOINT_NO_CONTENT, MethodNamesConstants.LOGIN);
         return ResponseEntity.ok(response);
     }
 }

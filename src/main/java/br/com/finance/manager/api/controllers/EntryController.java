@@ -28,11 +28,11 @@ import br.com.finance.manager.api.services.EntryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @RestController
-@RequestMapping("/api/v1/finance/entries")
+@RequestMapping("/entries")
 public class EntryController {
 
     private final EntryService entryService;

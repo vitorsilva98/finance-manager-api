@@ -15,9 +15,9 @@ import br.com.finance.manager.api.configs.security.services.TokenService;
 import br.com.finance.manager.api.models.UserModel;
 import br.com.finance.manager.api.payloads.responses.LoginResponse;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @Service
 public class TokenServiceImpl implements TokenService {
 
@@ -65,6 +65,8 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private Instant getExpirationDate() {
-        return LocalDateTime.now().plusMinutes(expires).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now()
+            .plusMinutes(expires)
+            .toInstant(ZoneOffset.of("-03:00"));
     }
 }

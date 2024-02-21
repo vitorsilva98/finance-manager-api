@@ -1,0 +1,19 @@
+{
+    "properties": [
+        {
+            "name": "api.security.token.secret",
+            "type": "java.lang.String",
+            "description": "Secret for JWT generation"
+        },
+        {
+            "name": "api.security.token.issuer",
+            "type": "java.lang.String",
+            "description": "Issuer for JWT generation"
+        },
+        {
+            "name": "api.security.token.expires",
+            "type": "java.lang.String",
+            "description": "JWT expiration in seconds"
+        }
+    ]
+}

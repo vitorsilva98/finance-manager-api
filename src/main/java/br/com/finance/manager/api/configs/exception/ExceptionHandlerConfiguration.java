@@ -12,15 +12,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @RestControllerAdvice
 public class ExceptionHandlerConfiguration {
 
     private static final String LOG_MESSAGE = "An exception occurred = %s";
 
-    /* Authentication e authorization exceptions */
+    /* Authentication and authorization exceptions */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Error> handlerUserNotFoundResponse() {
         Error error = new Error("Username or password invalid");

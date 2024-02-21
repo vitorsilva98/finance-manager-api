@@ -29,11 +29,11 @@ import br.com.finance.manager.api.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @RestController
-@RequestMapping("/api/v1/finance/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -65,7 +65,7 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
-    public ResponseEntity<Page<UserResponse>> getAll(@PageableDefault(sort = {"nickname"}) Pageable pageable) {
+    public ResponseEntity<Page<UserResponse>> getAll(@PageableDefault(sort = {"name"}) Pageable pageable) {
         log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ALL_USERS, pageable);
         Page<UserResponse> response = userService.getAll(pageable);
 

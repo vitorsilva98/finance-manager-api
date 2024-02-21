@@ -17,9 +17,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -49,8 +49,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 log.error(String.format("Error validating Authorization header = %s", e.getMessage()));
             }
-        } else {
-            log.error("Missing Authorization header");
         }
 
         filterChain.doFilter(request, response);

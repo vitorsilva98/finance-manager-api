@@ -32,15 +32,13 @@ public class EntryModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(precision = 10, scale = 2, nullable = false)
-    private BigDecimal amount;
-
-    @Column(name = "date_time", nullable = false)
-    private LocalDateTime dateTime;
-
     @Enumerated(EnumType.STRING)
     @Column(length = 20, name = "payment_method", nullable = false)
     private PaymentMethodEnum paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private EntryTypeEnum type;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -50,6 +48,12 @@ public class EntryModel implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel user;
 
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal amount;
+
+    @Column(name = "date_time", nullable = false)
+    private LocalDateTime dateTime;
+
     @Column(nullable = false)
     private Boolean reversed;
 
@@ -58,8 +62,4 @@ public class EntryModel implements Serializable {
 
     @Column(nullable = true)
     private String description;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 10, nullable = false)
-    private EntryTypeEnum type;
 }

@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  redis-cache:
+    image: redis:alpine
+    env_file: ./.env
+    ports:
+      - $CACHE_PORT:$CACHE_PORT
+    networks:
+      - finance-manager-api-network
+
+  postgres-db:
+    image: postgres:alpine
+    env_file: ./.env
+    environment:
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    ports:
+      - $DB_PORT:$DB_PORT
+    networks:
+      - finance-manager-api-network
+    volumes:
+      - postgres-db-data:/var/lib/postgresql/data
+
+  finance-manager-api:
+    build: .
+    env_file: ./.env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:$DB_PORT/$DB_NAME
+      SPRING_DATASOURCE_USERNAME: $DB_USER
+      SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
+      SPRING_REDIS_HOST: $CACHE_HOST
+      SPRING_REDIS_PORT: $CACHE_PORT
+      JWT_SECRET: $JWT_SECRET
+      JWT_ISSUER: $JWT_ISSUER
+      JWT_EXPIRES: $JWT_EXPIRES
+    ports:
+      - $APP_PORT:$APP_PORT
+    networks:
+      - finance-manager-api-network
+    volumes:
+      - finance-manager-api-logs:/var/lib/api/data
+    depends_on:
+      - postgres-db
+      - redis-cache
+
+volumes:
+  postgres-db-data:
+  finance-manager-api-logs:
+
+networks:
+  finance-manager-api-network:
+    driver: bridge
