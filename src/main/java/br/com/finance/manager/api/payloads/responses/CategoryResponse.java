@@ -20,6 +20,9 @@ public class CategoryResponse implements Serializable {
     private String name;
 
     public CategoryResponse(CategoryModel categoryModel) {
-        BeanUtils.copyProperties(categoryModel, this);
+        // System.out.println("cu");
+        // BeanUtils.copyProperties(this, categoryModel);
+        this.id = categoryModel.getId();
+        this.name = categoryModel.getName();
     }
 }

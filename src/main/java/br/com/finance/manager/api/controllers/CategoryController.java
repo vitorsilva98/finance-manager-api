@@ -29,7 +29,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/v1/finance/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -41,41 +41,41 @@ public class CategoryController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PostMapping
     public ResponseEntity<CategoryResponse> create(@RequestBody @Valid CreateCategoryRequest request, UriComponentsBuilder uriBuilder) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.CREATE_CATEGORY, request);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.CREATE_CATEGORY, request));
         CategoryResponse response = categoryService.create(request);
         URI getByIdUri = uriBuilder.path("/api/v1/finance/categories/{id}").buildAndExpand(response.getId()).toUri();
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.CREATE_CATEGORY, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.CREATE_CATEGORY, response));
         return ResponseEntity.created(getByIdUri).body(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getById(@PathVariable UUID id) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_CATEGORY_BY_ID, id);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_CATEGORY_BY_ID, id));
         CategoryResponse response = categoryService.getById(id);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_CATEGORY_BY_ID, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_CATEGORY_BY_ID, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     public ResponseEntity<Page<CategoryResponse>> getAll(@PageableDefault(sort = {"name"}) Pageable pageable) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ALL_CATEGORIES, pageable);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ALL_CATEGORIES, pageable));
         Page<CategoryResponse> response = categoryService.getAll(pageable);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ALL_CATEGORIES, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ALL_CATEGORIES, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.DELETE_CATEGORY_BY_ID, id);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.DELETE_CATEGORY_BY_ID, id));
         categoryService.deleteById(id);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT_NO_CONTENT, MethodNamesConstants.DELETE_CATEGORY_BY_ID);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT_NO_CONTENT, MethodNamesConstants.DELETE_CATEGORY_BY_ID));
         return ResponseEntity.noContent().build();
     }
 }

@@ -30,8 +30,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:$DB_PORT/$DB_NAME
       SPRING_DATASOURCE_USERNAME: $DB_USER
       SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
-      SPRING_REDIS_HOST: $CACHE_HOST
-      SPRING_REDIS_PORT: $CACHE_PORT
+      SPRING_DATA_REDIS_HOST: redis-cache
+      SPRING_DATA_REDIS_PORT: $CACHE_PORT
       JWT_SECRET: $JWT_SECRET
       JWT_ISSUER: $JWT_ISSUER
       JWT_EXPIRES: $JWT_EXPIRES
@@ -40,7 +40,7 @@ services:
     networks:
       - finance-manager-api-network
     volumes:
-      - finance-manager-api-logs:/var/lib/api/data
+      - finance-manager-api-logs:/logs
     depends_on:
       - postgres-db
       - redis-cache

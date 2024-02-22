@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @CacheEvict(cacheNames = USER_CACHE_KEY, allEntries = true)
     public UserResponse changeName(ChangeUserNameRequest request, String username) {
-        /* Não é necessário validar o Optional porque essa chamada já é feita na validação do token */
+        /* It is not necessary to validate the Optional because this call is already made when validating the token */
         Optional<UserModel> userModelOptional = userRepository.findByEmail(username);
         UserModel userModel = userModelOptional.get();
         userModel.setName(request.getName());
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
         List<RoleModel> userRoles = new ArrayList<>();
 
         for (RoleNameEnum roleName : roles) {
-            /* Não é usado Optional porque as roles são pré-cadastradas no banco e o enum já válida a entrada */
+            /* Optional is not used because the roles are pre-registered in the database and the enum is already validated in request */
             RoleModel roleModel = roleRepository.findByName(roleName);
             userRoles.add(roleModel);
         }

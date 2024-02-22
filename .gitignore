@@ -1,6 +1,6 @@
 # Project
 .env
-.logs/
+logs/
 src/main/resources/application-dev.properties
 HELP.md
 target/

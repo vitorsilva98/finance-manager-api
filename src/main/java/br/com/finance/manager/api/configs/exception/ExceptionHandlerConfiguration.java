@@ -20,6 +20,15 @@ public class ExceptionHandlerConfiguration {
 
     private static final String LOG_MESSAGE = "An exception occurred = %s";
 
+    /* Generic exception */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Error> handlerExceptionResponse(Exception ex) {
+        Error error = new Error("An unexpected error ocurred");
+        ex.printStackTrace();
+        log.error(String.format(LOG_MESSAGE, ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
     /* Authentication and authorization exceptions */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Error> handlerUserNotFoundResponse() {
@@ -58,7 +67,7 @@ public class ExceptionHandlerConfiguration {
     }
 
     @ExceptionHandler(BusinessRuleException.class)
-    public ResponseEntity<Error> handlerBusinessRuleErrorResponse(BusinessRuleException ex) {
+    public ResponseEntity<Error> handlerBusinessRuleResponse(BusinessRuleException ex) {
         Error error = new Error(ex.getMessage());
         log.error(String.format(LOG_MESSAGE, error));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

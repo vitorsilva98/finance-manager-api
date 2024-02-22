@@ -33,7 +33,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/finance/users")
 public class UserController {
 
     private final UserService userService;
@@ -45,51 +45,51 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody @Valid CreateUserRequest request, UriComponentsBuilder uriBuilder) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.CREATE_USER, request);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.CREATE_USER, request));
         UserResponse response = userService.create(request);
         URI getByIdUri = uriBuilder.path("/api/v1/finance/users/{id}").buildAndExpand(response.getId()).toUri();
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.CREATE_USER, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.CREATE_USER, response));
         return ResponseEntity.created(getByIdUri).body(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getById(@PathVariable UUID id) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_USER_BY_ID, id);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_USER_BY_ID, id));
         UserResponse response = userService.getById(id);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_USER_BY_ID, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_USER_BY_ID, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     public ResponseEntity<Page<UserResponse>> getAll(@PageableDefault(sort = {"name"}) Pageable pageable) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ALL_USERS, pageable);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ALL_USERS, pageable));
         Page<UserResponse> response = userService.getAll(pageable);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ALL_USERS, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ALL_USERS, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PatchMapping
     public ResponseEntity<UserResponse> changeName(@RequestBody @Valid ChangeUserNameRequest request, HttpServletRequest httpServletRequest) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.CHANGE_USER_NAME, request);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.CHANGE_USER_NAME, request));
         UserResponse response = userService.changeName(request, httpServletRequest.getAttribute("subject").toString());
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.CHANGE_USER_NAME, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.CHANGE_USER_NAME, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable UUID id, @RequestBody @Valid UpdateUserRequest request) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.UPDATE_USER, id);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.UPDATE_USER, id));
         UserResponse response = userService.update(id, request);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.UPDATE_USER, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.UPDATE_USER, response));
         return ResponseEntity.ok(response);
     }
 }

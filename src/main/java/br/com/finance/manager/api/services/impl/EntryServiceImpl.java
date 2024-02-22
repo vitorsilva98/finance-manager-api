@@ -13,6 +13,7 @@ import br.com.finance.manager.api.configs.exception.BusinessRuleException;
 import br.com.finance.manager.api.configs.exception.EntityNotFoundException;
 import br.com.finance.manager.api.configs.exception.InvalidEntityDataException;
 import br.com.finance.manager.api.enums.RoleNameEnum;
+import br.com.finance.manager.api.models.CategoryModel;
 import br.com.finance.manager.api.models.EntryModel;
 import br.com.finance.manager.api.models.UserModel;
 import br.com.finance.manager.api.payloads.requests.AddEntryRequest;
@@ -39,18 +40,19 @@ public class EntryServiceImpl implements EntryService {
     @Override
     @Transactional
     public EntryResponse add(AddEntryRequest request, String username) {
-        if (!categoryRepository.existsById(request.getCategoryId())) {
+        Optional<CategoryModel> categoryModelOptional = categoryRepository.findById(request.getCategoryId());
+        if (!categoryModelOptional.isPresent()) {
             throw new InvalidEntityDataException("Category doesn't exists");
         }
 
         EntryModel entryModel = new EntryModel();
         entryModel.setAmount(request.getAmount());
-        entryModel.setCategory(categoryRepository.getReferenceById(request.getCategoryId()));
+        entryModel.setCategory(categoryModelOptional.get());
         entryModel.setDateTime(request.getDateTime() != null ? request.getDateTime() : LocalDateTime.now());
         entryModel.setDescription(request.getDescription());
         entryModel.setPaymentMethod(request.getPaymentMethod());
         entryModel.setType(request.getType());
-        /* Não é necessário validar o Optional porque essa chamada já é feita na validação do token */
+        /* It is not necessary to validate the Optional because this call is already made when validating the token */
         entryModel.setUser(userRepository.findByEmail(username).get());
         return new EntryResponse(entryRepository.save(entryModel));
     }
@@ -70,7 +72,7 @@ public class EntryServiceImpl implements EntryService {
     public EntryResponse reverse(UUID id, ReverseEntryRequest request, String username) {
         EntryModel entryModel = findById(id);
         if (!entryModel.getUser().getUsername().equals(username)) {
-            /* Não é necessário validar o Optional porque essa chamada já é feita na validação do token */
+            /* It is not necessary to validate the Optional because this call is already made when validating the token */
             Optional<UserModel> userModelOption = userRepository.findByEmail(username);
             if (userModelOption.get().getRoles().stream()
                 .noneMatch(role -> role.getName().equals(RoleNameEnum.ROLE_ADMIN))) {
@@ -86,8 +88,8 @@ public class EntryServiceImpl implements EntryService {
     @Override
     @Transactional
     public void deleteById(UUID id) {
-        findById(id);
-        entryRepository.deleteById(id);
+        EntryModel entryModel = findById(id);
+        entryRepository.delete(entryModel);
     }
 
     private EntryModel findById(UUID id) {

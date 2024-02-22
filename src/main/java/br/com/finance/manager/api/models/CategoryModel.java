@@ -14,9 +14,9 @@ import jakarta.persistence.Table;
 
 import lombok.Data;
 
-@Table(name = "categories")
-@Entity
 @Data
+@Entity
+@Table(name = "categories")
 public class CategoryModel implements Serializable {
 
     private static final long serialVersionUID = 1L;

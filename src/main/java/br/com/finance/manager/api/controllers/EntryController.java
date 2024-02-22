@@ -32,7 +32,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/entries")
+@RequestMapping("/api/v1/finance/entries")
 public class EntryController {
 
     private final EntryService entryService;
@@ -44,51 +44,51 @@ public class EntryController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PostMapping
     public ResponseEntity<EntryResponse> add(@RequestBody @Valid AddEntryRequest request, HttpServletRequest httpServletRequest, UriComponentsBuilder uriBuilder) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.ADD_ENTRY, request);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.ADD_ENTRY, request));
         EntryResponse response = entryService.add(request, httpServletRequest.getAttribute("subject").toString());
         URI getByIdUri = uriBuilder.path("/api/v1/finance/entries/{id}").buildAndExpand(response.getId()).toUri();
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.ADD_ENTRY, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.ADD_ENTRY, response));
         return ResponseEntity.created(getByIdUri).body(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<EntryResponse> getById(@PathVariable UUID id) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ENTRY_BY_ID, id);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ENTRY_BY_ID, id));
         EntryResponse response = entryService.getById(id);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ENTRY_BY_ID, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ENTRY_BY_ID, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     public ResponseEntity<Page<EntryResponse>> getAll(@PageableDefault(sort = {"dateTime"}) Pageable pageable) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ALL_ENTRIES, pageable);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.GET_ALL_ENTRIES, pageable));
         Page<EntryResponse> response = entryService.getAll(pageable);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ALL_ENTRIES, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.GET_ALL_ENTRIES, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PatchMapping("/{id}")
     public ResponseEntity<EntryResponse> reverse(@PathVariable UUID id, @RequestBody @Valid ReverseEntryRequest request, HttpServletRequest httpServletRequest) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.REVERSE_ENTRY, id);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.REVERSE_ENTRY, id));
         EntryResponse response = entryService.reverse(id, request, httpServletRequest.getAttribute("subject").toString());
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.REVERSE_ENTRY, response);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT, MethodNamesConstants.REVERSE_ENTRY, response));
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
-        log.info(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.DELETE_ENTRY_BY_ID, id);
+        log.info(String.format(LogMessagesConstants.INPUT_ENDPOINT, MethodNamesConstants.DELETE_ENTRY_BY_ID, id));
         entryService.deleteById(id);
 
-        log.info(LogMessagesConstants.OUTPUT_ENDPOINT_NO_CONTENT, MethodNamesConstants.DELETE_ENTRY_BY_ID);
+        log.info(String.format(LogMessagesConstants.OUTPUT_ENDPOINT_NO_CONTENT, MethodNamesConstants.DELETE_ENTRY_BY_ID));
         return ResponseEntity.noContent().build();
     }
 }

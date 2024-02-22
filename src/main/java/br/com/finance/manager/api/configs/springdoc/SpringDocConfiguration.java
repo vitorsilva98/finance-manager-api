@@ -31,11 +31,11 @@ public class SpringDocConfiguration {
     private Info getApiInfo() {
         return new Info()
             .title("Finance Manager API")
-            .description("API para gestão de finanças")
             .version("0.0.1-SNAPSHOT")
+            .description("API para gestão de finanças pessoais")
             .contact(new Contact()
-                .email("vitor.augsilva98@gmail.com")
                 .name("Vitor Augusto Silva")
+                .email("vitor.augsilva98@gmail.com")
                 .url("https://github.com/vitorsilva98/"));
     }
 }
