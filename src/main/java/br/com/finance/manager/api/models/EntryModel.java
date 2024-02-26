@@ -21,9 +21,9 @@ import jakarta.persistence.Table;
 
 import lombok.Data;
 
-@Table(name = "entries")
-@Entity
 @Data
+@Entity
+@Table(name = "entries")
 public class EntryModel implements Serializable {
 
     private static final long serialVersionUID = 1L;

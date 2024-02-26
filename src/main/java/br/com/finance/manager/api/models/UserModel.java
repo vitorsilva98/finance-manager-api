@@ -22,9 +22,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
 
-@Table(name = "users")
-@Entity
 @Data
+@Entity
+@Table(name = "users")
 public class UserModel implements UserDetails {
 
     private static final long serialVersionUID = 1L;

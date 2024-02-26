@@ -12,9 +12,11 @@ import br.com.finance.manager.api.enums.PaymentMethodEnum;
 import br.com.finance.manager.api.models.EntryModel;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString
 public class EntryResponse implements Serializable {
 

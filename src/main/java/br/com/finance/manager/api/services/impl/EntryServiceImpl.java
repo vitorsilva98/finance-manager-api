@@ -47,11 +47,11 @@ public class EntryServiceImpl implements EntryService {
 
         EntryModel entryModel = new EntryModel();
         entryModel.setAmount(request.getAmount());
-        entryModel.setCategory(categoryModelOptional.get());
         entryModel.setDateTime(request.getDateTime() != null ? request.getDateTime() : LocalDateTime.now());
         entryModel.setDescription(request.getDescription());
         entryModel.setPaymentMethod(request.getPaymentMethod());
         entryModel.setType(request.getType());
+        entryModel.setCategory(categoryModelOptional.get());
         /* It is not necessary to validate the Optional because this call is already made when validating the token */
         entryModel.setUser(userRepository.findByEmail(username).get());
         return new EntryResponse(entryRepository.save(entryModel));

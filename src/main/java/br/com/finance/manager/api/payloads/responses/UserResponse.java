@@ -9,9 +9,11 @@ import org.springframework.beans.BeanUtils;
 import br.com.finance.manager.api.models.UserModel;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString
 public class UserResponse implements Serializable {
 

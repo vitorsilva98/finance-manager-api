@@ -14,7 +14,7 @@
         <RollingFile
                 name="File"
                 fileName="${LOG_ROOT}/${FILE_NAME}.log"
-                filePattern="${LOG_ROOT}/archived/${FILE_NAME}-%d{dd-MM-yyyy}-i%.log">
+                filePattern="${LOG_ROOT}/archived/${FILE_NAME}-%d{dd-MM-yyyy}.log">
             <PatternLayout pattern="${LOG_PATTERN}" />
 
             <Policies>

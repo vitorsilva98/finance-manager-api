@@ -8,9 +8,11 @@ import org.springframework.beans.BeanUtils;
 import br.com.finance.manager.api.models.CategoryModel;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString
 public class CategoryResponse implements Serializable {
 
@@ -20,9 +22,6 @@ public class CategoryResponse implements Serializable {
     private String name;
 
     public CategoryResponse(CategoryModel categoryModel) {
-        // System.out.println("cu");
-        // BeanUtils.copyProperties(this, categoryModel);
-        this.id = categoryModel.getId();
-        this.name = categoryModel.getName();
+        BeanUtils.copyProperties(categoryModel, this);
     }
 }

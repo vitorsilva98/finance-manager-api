@@ -17,9 +17,9 @@ import jakarta.persistence.Table;
 
 import lombok.Data;
 
-@Table(name = "roles")
-@Entity
 @Data
+@Entity
+@Table(name = "roles")
 public class RoleModel implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
