@@ -20,14 +20,6 @@ public class ExceptionHandlerConfiguration {
 
     private static final String LOG_MESSAGE = "An exception occurred = %s";
 
-    /* Generic exception */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Error> handlerExceptionResponse(Exception ex) {
-        Error error = new Error("An unexpected error ocurred");
-        log.error(String.format(LOG_MESSAGE, ex.getMessage()));
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
-
     /* Authentication and authorization exceptions */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Error> handlerBadCredentialsResponse() {

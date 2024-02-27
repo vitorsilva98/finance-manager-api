@@ -47,13 +47,14 @@ public class EntryServiceImpl implements EntryService {
 
         EntryModel entryModel = new EntryModel();
         entryModel.setAmount(request.getAmount());
-        entryModel.setDateTime(request.getDateTime() != null ? request.getDateTime() : LocalDateTime.now());
+        entryModel.setDateTime(request.getDateTime() != null ? request.getDateTime() : getNow());
         entryModel.setDescription(request.getDescription());
         entryModel.setPaymentMethod(request.getPaymentMethod());
         entryModel.setType(request.getType());
-        entryModel.setCategory(categoryModelOptional.get());
+        entryModel.setReversed(false);
         /* It is not necessary to validate the Optional because this call is already made when validating the token */
         entryModel.setUser(userRepository.findByEmail(username).get());
+        entryModel.setCategory(categoryModelOptional.get());
         return new EntryResponse(entryRepository.save(entryModel));
     }
 
@@ -71,6 +72,11 @@ public class EntryServiceImpl implements EntryService {
     @Transactional
     public EntryResponse reverse(UUID id, ReverseEntryRequest request, String username) {
         EntryModel entryModel = findById(id);
+
+        if (entryModel.getReversed().booleanValue()) {
+            throw new BusinessRuleException("Entry already reversed");
+        }
+
         if (!entryModel.getUser().getUsername().equals(username)) {
             /* It is not necessary to validate the Optional because this call is already made when validating the token */
             Optional<UserModel> userModelOption = userRepository.findByEmail(username);
@@ -81,7 +87,7 @@ public class EntryServiceImpl implements EntryService {
         }
 
         entryModel.setReversed(true);
-        entryModel.setReversalDateTime(request.getReversalDateTime() != null ? request.getReversalDateTime() : LocalDateTime.now());
+        entryModel.setReversalDateTime(request.getReversalDateTime() != null ? request.getReversalDateTime() : getNow());
         return new EntryResponse(entryModel);
     }
 
@@ -95,5 +101,9 @@ public class EntryServiceImpl implements EntryService {
     private EntryModel findById(UUID id) {
         return entryRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Entry doesn't exists"));
+    }
+
+    private LocalDateTime getNow() {
+        return LocalDateTime.now().withNano(0);
     }
 }
