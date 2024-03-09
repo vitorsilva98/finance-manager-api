@@ -6,14 +6,17 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 
 import br.com.finance.manager.api.models.CategoryModel;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,6 +24,7 @@ public class CategoryResponse implements Serializable {
     private UUID id;
     private String name;
 
+    @SuppressWarnings("null")
     public CategoryResponse(CategoryModel categoryModel) {
         BeanUtils.copyProperties(categoryModel, this);
     }

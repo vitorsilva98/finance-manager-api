@@ -12,6 +12,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.com.finance.manager.api.payloads.responses.Error;
+import br.com.finance.manager.api.payloads.responses.InputError;
+import br.com.finance.manager.api.payloads.responses.InputErrorDetails;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -23,7 +27,7 @@ public class ExceptionHandlerConfiguration {
     /* Authentication and authorization exceptions */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Error> handlerBadCredentialsResponse() {
-        Error error = new Error("Username or password invalid");
+        Error error = new Error("Email or password invalid");
         log.error(String.format(LOG_MESSAGE, error));
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
@@ -70,16 +74,5 @@ public class ExceptionHandlerConfiguration {
         InputError inputError = new InputError("Invalid inputs", errors.stream().map(InputErrorDetails::new).toList());
         log.error(String.format(LOG_MESSAGE, inputError));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(inputError);
-    }
-
-    /* Records exceptions */
-    private record Error(String message) {}
-
-    private record InputError(String message, List<InputErrorDetails> errors) {}
-
-    private record InputErrorDetails(String field, String message) {
-        public InputErrorDetails(FieldError fieldError) {
-            this(fieldError.getField(), fieldError.getDefaultMessage());
-        }
     }
 }

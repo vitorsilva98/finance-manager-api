@@ -47,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
         return new CategoryResponse(findById(id));
     }
 
+    @SuppressWarnings("null")
     @Override
     @Cacheable(cacheNames = CATEGORY_CACHE_KEY)
     public Page<CategoryResponse> getAll(Pageable pageable) {
@@ -66,6 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(categoryModel);
     }
 
+    @SuppressWarnings("null")
     private CategoryModel findById(UUID id) {
         return categoryRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Category doesn't exists"));

@@ -5,7 +5,7 @@ services:
     image: redis:alpine
     env_file: ./.env
     ports:
-      - $CACHE_PORT:$CACHE_PORT
+      - $REDIS_CACHE_PORT:$REDIS_CACHE_PORT
     networks:
       - finance-manager-api-network
 
@@ -13,11 +13,11 @@ services:
     image: postgres:alpine
     env_file: ./.env
     environment:
-      POSTGRES_DB: $DB_NAME
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB_NAME
+      POSTGRES_USER: $POSTGRES_DB_USER
+      POSTGRES_PASSWORD: $POSTGRES_DB_PASSWORD
     ports:
-      - $DB_PORT:$DB_PORT
+      - $POSTGRES_DB_PORT:$POSTGRES_DB_PORT
     networks:
       - finance-manager-api-network
     volumes:
@@ -27,16 +27,17 @@ services:
     build: .
     env_file: ./.env
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:$DB_PORT/$DB_NAME
-      SPRING_DATASOURCE_USERNAME: $DB_USER
-      SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
-      SPRING_DATA_REDIS_HOST: redis-cache
-      SPRING_DATA_REDIS_PORT: $CACHE_PORT
       JWT_SECRET: $JWT_SECRET
       JWT_ISSUER: $JWT_ISSUER
       JWT_EXPIRES: $JWT_EXPIRES
+      SERVER_PORT: $SERVER_PORT
+      SPRING_DATA_REDIS_HOST: redis-cache
+      SPRING_DATA_REDIS_PORT: $REDIS_CACHE_PORT
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:$DB_PORT/$DB_NAME
+      SPRING_DATASOURCE_USERNAME: $POSTGRES_DB_USER
+      SPRING_DATASOURCE_PASSWORD: $POSTGRES_DB_PASSWORD
     ports:
-      - $APP_PORT:$APP_PORT
+      - $SERVER_PORT:$SERVER_PORT
     networks:
       - finance-manager-api-network
     volumes:

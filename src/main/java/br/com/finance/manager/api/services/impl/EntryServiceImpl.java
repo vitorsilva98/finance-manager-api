@@ -39,6 +39,7 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     @Transactional
+    @SuppressWarnings("null")
     public EntryResponse add(AddEntryRequest request, String username) {
         Optional<CategoryModel> categoryModelOptional = categoryRepository.findById(request.getCategoryId());
         if (!categoryModelOptional.isPresent()) {
@@ -64,6 +65,7 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
+    @SuppressWarnings("null")
     public Page<EntryResponse> getAll(Pageable pageable) {
         return entryRepository.findAll(pageable).map(EntryResponse::new);
     }
@@ -93,11 +95,13 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     @Transactional
+    @SuppressWarnings("null")
     public void deleteById(UUID id) {
         EntryModel entryModel = findById(id);
         entryRepository.delete(entryModel);
     }
 
+    @SuppressWarnings("null")
     private EntryModel findById(UUID id) {
         return entryRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Entry doesn't exists"));

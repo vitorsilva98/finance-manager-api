@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
         return new UserResponse(findById(id));
     }
 
+    @SuppressWarnings("null")
     @Override
     @Cacheable(cacheNames = USER_CACHE_KEY)
     public Page<UserResponse> getAll(Pageable pageable) {
@@ -107,6 +108,7 @@ public class UserServiceImpl implements UserService {
         return userRoles;
     }
 
+    @SuppressWarnings("null")
     private UserModel findById(UUID id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
